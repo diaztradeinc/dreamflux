@@ -11,41 +11,19 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/api/generate', async (req, res) => {
-  const {
-    prompt,
-    negative_prompt = "",
-    model = "sdxl",
-    aspect_ratio = "portrait",
-    steps = 30,
-    cfg_scale = 7,
-    samples = 1,
-    upscale = ""
-  } = req.body;
-
+app.get('/api/models', async (req, res) => {
   try {
-    const response = await axios.post("https://api.modelslab.com/v1/stable-diffusion/text-to-image", {
-      prompt,
-      negative_prompt,
-      model,
-      aspect_ratio,
-      steps,
-      cfg_scale,
-      samples,
-      upscale
-    }, {
+    const response = await axios.post("https://modelslab.com/api/v4/dreambooth/model_list", {}, {
       headers: {
         "Authorization": `Bearer ${process.env.MODELSLAB_API_KEY}`,
         "Content-Type": "application/json"
       }
     });
 
-    const imageUrl = response.data?.images?.[0];
-    res.json({ image: imageUrl });
-
+    res.json({ models: response.data });
   } catch (error) {
-    console.error("Generation error:", error.response?.data || error.message);
-    res.status(500).json({ error: "Image generation failed" });
+    console.error("Model list error:", error.response?.data || error.message);
+    res.status(500).json({ error: "Failed to fetch model list" });
   }
 });
 
