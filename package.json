@@ -1,6 +1,6 @@
 
 {
-  "name": "dreamflux-model-list-backend",
+  "name": "dreamflux-backend-debug",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
