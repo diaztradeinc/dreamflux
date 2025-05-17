@@ -3,7 +3,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const axios = require('axios');
-require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +13,7 @@ app.use(bodyParser.json());
 app.get('/api/models', async (req, res) => {
   try {
     const response = await axios.post("https://modelslab.com/api/v4/dreambooth/model_list", {
-      key: process.env.MODELSLAB_API_KEY
+      key: "ON2hHwPjxtUnKl6rKj39SMj2A68AmxEroxv4COKNsSYSob993XyHnfZzuPTo"
     }, {
       headers: {
         "Content-Type": "application/json"
@@ -29,7 +28,6 @@ app.get('/api/models', async (req, res) => {
   }
 });
 
-// leave /api/generate unchanged
 app.post('/api/generate', async (req, res) => {
   const {
     prompt,
@@ -54,7 +52,7 @@ app.post('/api/generate', async (req, res) => {
       upscale
     }, {
       headers: {
-        "Authorization": `Bearer ${process.env.MODELSLAB_API_KEY}`,
+        "Authorization": `Bearer ON2hHwPjxtUnKl6rKj39SMj2A68AmxEroxv4COKNsSYSob993XyHnfZzuPTo`,
         "Content-Type": "application/json"
       }
     });
@@ -69,5 +67,5 @@ app.post('/api/generate', async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Backend running on port ${PORT}`);
+  console.log(`🚀 DreamFlux backend running on port ${PORT}`);
 });
