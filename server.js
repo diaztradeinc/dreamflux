@@ -12,16 +12,27 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.post('/api/generate', async (req, res) => {
-  const { prompt, model, aspect_ratio } = req.body;
+  const {
+    prompt,
+    negative_prompt = "",
+    model = "sdxl",
+    aspect_ratio = "portrait",
+    steps = 30,
+    cfg_scale = 7,
+    samples = 1,
+    upscale = ""
+  } = req.body;
 
   try {
     const response = await axios.post("https://api.modelslab.com/v1/stable-diffusion/text-to-image", {
       prompt,
-      model: model || "sdxl",
-      negative_prompt: "",
-      samples: 1,
-      steps: 30,
-      aspect_ratio: aspect_ratio || "portrait"
+      negative_prompt,
+      model,
+      aspect_ratio,
+      steps,
+      cfg_scale,
+      samples,
+      upscale
     }, {
       headers: {
         "Authorization": `Bearer ${process.env.MODELSLAB_API_KEY}`,
@@ -33,7 +44,7 @@ app.post('/api/generate', async (req, res) => {
     res.json({ image: imageUrl });
 
   } catch (error) {
-    console.error("Modelslab Error:", error.response?.data || error.message);
+    console.error("Generation error:", error.response?.data || error.message);
     res.status(500).json({ error: "Image generation failed" });
   }
 });

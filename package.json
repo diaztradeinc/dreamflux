@@ -1,6 +1,6 @@
 
 {
-  "name": "dreamflux-backend-modelslab",
+  "name": "dreamflux-backend-modelslab-full",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
