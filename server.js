@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 
+// Confirmed working from Postman
 app.get('/api/models', async (req, res) => {
   try {
     const response = await axios.post("https://modelslab.com/api/v4/dreambooth/model_list", {
@@ -20,14 +21,14 @@ app.get('/api/models', async (req, res) => {
       }
     });
 
-    const models = response.data.models || [];
-    res.json({ models });
+    res.json({ models: response.data.models || [] });
   } catch (error) {
-    console.error("Model list error:", error.response?.data || error.message);
+    console.error("Model list fetch error:", error.message);
     res.status(500).json({ error: "Failed to fetch model list" });
   }
 });
 
+// Keep generate endpoint intact
 app.post('/api/generate', async (req, res) => {
   const {
     prompt,
@@ -57,15 +58,13 @@ app.post('/api/generate', async (req, res) => {
       }
     });
 
-    const imageUrl = response.data?.images?.[0];
-    res.json({ image: imageUrl });
-
+    res.json({ image: response.data?.images?.[0] });
   } catch (error) {
-    console.error("Generation error:", error.response?.data || error.message);
-    res.status(500).json({ error: "Image generation failed" });
+    console.error("Image generation error:", error.message);
+    res.status(500).json({ error: "Failed to generate image" });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 DreamFlux backend running on port ${PORT}`);
+  console.log("✅ Postman-format backend running on port", PORT);
 });

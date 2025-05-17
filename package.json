@@ -1,6 +1,6 @@
 
 {
-  "name": "dreamflux-backend-hardcoded",
+  "name": "dreamflux-backend-postman",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
